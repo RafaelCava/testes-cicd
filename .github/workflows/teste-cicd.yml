@@ -1,0 +1,23 @@
+name: install-and-test
+
+on:
+  push:
+    branches: [ "develop", "homolog", "main" ]
+  pull_request:
+    branches: [ "develop", "homolog", "master", "main" ]
+
+jobs:
+  install-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2.1.0
+
+      - name: get tag
+        id: step_one
+        run: |
+          echo inhaufei=$(git log -1 --decorate=short --pretty=format:'%s' | grep 'elease/[0-9]\{1,3\}.[0-9]\{1,3\}.[0-9]\{1,3\}' -oh | awk -F/ '{print $2}') >> $GITHUB_ENV
+
+      - name: Check outputs
+        id: step_two
+        run: |
+          echo "${{ env.inhaufei }}"
